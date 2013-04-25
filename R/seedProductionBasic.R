@@ -12,7 +12,8 @@
 seedProductionBasic <- function(ageLayer,
                                 individualsLayer,
                                 seedProdPerIndFunction,
-                                seedsProducedOutputLayer
+                                seedsProducedOutputLayer,
+                                initial = FALSE
                                 ) {
   ## calculating seedsProduced layer
   seeds <- readRAST6(
@@ -22,8 +23,19 @@ seedProductionBasic <- function(ageLayer,
       ),
     NODATA=-1
     )
-  seeds[[3]] <- seedProdPerIndFunction(seeds[[1]]) * seeds[[2]]
-
+  if (initial) {
+    seeds[[3]] <- seeds[[1]]
+    seeds[[3]] <- 0
+    while (max(seeds[[1]], na.rm=TRUE) > 0)
+      {
+        seeds[[3]] <- seeds[[3]] + seedProdPerIndFunction(seeds[[1]]) * seeds[[2]]
+        seeds[[1]] <- seeds[[1]] - 1
+        seeds[[1]][seeds[[1]] < 0] <- 0
+      }
+  } else {
+    seeds[[3]] <- seedProdPerIndFunction(seeds[[1]]) * seeds[[2]]
+  }
+  
   mode(seeds[[3]]) <- "double"
   ## seeds@proj4string <- parameter$proj4string
   writeRAST6(
