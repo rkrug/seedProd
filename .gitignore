@@ -1,0 +1,10 @@
+*#seedProduction.*
+seedProduction.*
+!seedProduction.org*
+*.o
+*.so
+*.rds
+.#*
+#*
+*#
+*~

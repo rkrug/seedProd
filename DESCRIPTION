@@ -1,0 +1,10 @@
+Package: seedProduction
+Type: Package
+Title: Seep Production Routines
+Version: 0.0-1
+Date: 2013-04-25_14-27
+Author: Rainer M. Krug
+Maintainer: Rainer M Krug <Rainer@krugs.de>
+Description: Different routines for simulating seed production
+License: GPL-3
+LazyLoad: yes
