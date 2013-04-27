@@ -1,8 +1,8 @@
-Package: seedProduction
+Package: seedProd
 Type: Package
 Title: Seep Production Routines
 Version: 0.0-1
-Date: 2013-04-25_15-08
+Date: 2013-04-26_15-15
 Author: Rainer M. Krug
 Maintainer: Rainer M Krug <Rainer@krugs.de>
 Description: Different routines for simulating seed production

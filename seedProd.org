@@ -1,4 +1,4 @@
-#+TITLE:     seedProduction.org
+#+TITLE:     seedProd.org
 #+AUTHOR:    Charles C. Berry    
 #+EMAIL:     cberry@tajo.ucsd.edu
 #+DATE:      2010-12-08 Thur
@@ -93,10 +93,10 @@ Org-babel support for building
   sed -i s/PATCHVERSION/$PATCHVERSION/ ./DESCRIPTION
   sed -i s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./DESCRIPTION
 
-  sed -i s/MAJORVERSION/$MAJORVERSION/ ./seedProduction-package.R
-  sed -i s/MINORVERSION/$MINORVERSION/ ./seedProduction-package.R
-  sed -i s/PATCHVERSION/$PATCHVERSION/ ./seedProduction-package.R
-  sed -i s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProduction-package.R
+  sed -i s/MAJORVERSION/$MAJORVERSION/ ./seedProd-package.R
+  sed -i s/MINORVERSION/$MINORVERSION/ ./seedProd-package.R
+  sed -i s/PATCHVERSION/$PATCHVERSION/ ./seedProd-package.R
+  sed -i s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProd-package.R
 
   Rscript -e "library(roxygen2);roxygenize('pkg', roxygen.dir='pkg', copy.package=FALSE, unlink.target=FALSE)"
   rm -f ./postTangleScript.sh
@@ -112,9 +112,9 @@ Org-babel support for building
 :padline: no
 :END: 
 #+begin_src gitignore
-  *#seedProduction.*
-  seedProduction.*
-  !seedProduction.org*
+  *#seedProd.*
+  seedProd.*
+  !seedProd.org*
   *.o
   *.so
   *.rds
@@ -155,7 +155,7 @@ Complete version info
 #+begin_src fundamental
   .git
   ^.*\\.org$
-  ^seedProduction.
+  ^seedProd.
   .gitignore
   library
   version
@@ -165,11 +165,11 @@ Complete version info
 
 
 * Package description
-#+begin_src R :eval nil :tangle ./seedProduction-package.R :shebang :padline no :no-expand :comments no
+#+begin_src R :eval nil :tangle ./seedProd-package.R :shebang :padline no :no-expand :comments no
   ##' Seed production routines
   ##' 
   ##' \tabular{ll}{
-  ##' Package: \tab seedProduction\cr
+  ##' Package: \tab seedProd\cr
   ##' Type: \tab Package\cr
   ##' Version: \tab MAJORVERSION.MINORVERSION.PATCHVERSION\cr
   ##' Date: \tab TODAYSDATE\cr
@@ -191,7 +191,7 @@ Complete version info
 :comments: no
 :END:
 #+begin_src fundamental
-  Package: seedProduction
+  Package: seedProd
   Type: Package
   Title: Seep Production Routines
   Version: MAJORVERSION.MINORVERSION-PATCHVERSION
@@ -211,7 +211,7 @@ Complete version info
 :comments: no
 :END:
 #+begin_src R
-  # useDynLib(seedProduction)
+  # useDynLib(seedProd)
   exportPattern("^[[:alpha:]]+")
 #+end_src
 
@@ -220,10 +220,10 @@ Complete version info
 
 * R directory (./R)
 
-** TODO seedProductionBasic
+** TODO seedProdBasic
 Needs to be tested!!!
 :PROPERTIES:
-:tangle:   ./R/seedProductionBasic.R
+:tangle:   ./R/seedProdBasic.R
 :comments: yes
 :no-expand: TRUE
 :END:
@@ -238,7 +238,7 @@ Needs to be tested!!!
   ##' @param seedsProducedOutputLayer name of the raster layer containing the number of newly produced seeds (will be created!)
   ##' @return 
   ##' @author Rainer M Krug
-  seedProductionBasic <- function(ageLayer,
+  seedProdBasic <- function(ageLayer,
                                   individualsLayer,
                                   seedProdPerIndFunction,
                                   seedsProducedOutputLayer,
@@ -276,6 +276,7 @@ Needs to be tested!!!
   }
 #+end_src
 
+
 * TODO Tests
 Write test functions
 * TODO Vignette
@@ -295,13 +296,13 @@ Write vignette
  * using session charset: UTF-8
  * checking for file ‘DESCRIPTION’ ... OK
  * checking extension type ... Package
- * this is package ‘seedProduction’ version ‘0.0-13’
+ * this is package ‘seedProd’ version ‘0.0-13’
  * checking package namespace information ... OK
  * checking package dependencies ... OK
  * checking if this is a source package ... WARNING
-Subdirectory ‘seedProduction/src’ contains object files.
+Subdirectory ‘seedProd/src’ contains object files.
  * checking for executable files ... OK
- * checking whether package ‘seedProduction’ can be installed ... OK
+ * checking whether package ‘seedProd’ can be installed ... OK
  * checking installed package size ... OK
  * checking package directory ... OK
  * checking for portable file names ... OK
@@ -430,7 +431,7 @@ for details
 
 #+results:
 : g++ -I/usr/share/R/include   -I"/home/rkrug/R/i486-pc-linux-gnu-library/2.13/Rcpp/include"   -fpic  -O3 -pipe  -g -c windDispCpp.cpp -o windDispCpp.o
-: g++ -shared -o seedProduction.so windDispCpp.o -L/home/rkrug/R/i486-pc-linux-gnu-library/2.13/Rcpp/lib -lRcpp -Wl,-rpath,/home/rkrug/R/i486-pc-linux-gnu-library/2.13/Rcpp/lib -L/usr/lib/R/lib -lR
+: g++ -shared -o seedProd.so windDispCpp.o -L/home/rkrug/R/i486-pc-linux-gnu-library/2.13/Rcpp/lib -lRcpp -Wl,-rpath,/home/rkrug/R/i486-pc-linux-gnu-library/2.13/Rcpp/lib -L/usr/lib/R/lib -lR
 
 
 ** build package
@@ -495,7 +496,7 @@ grep 'require(' R/*
 Only need to run this once (unless you add more ignorable files).
 
 #+begin_src R :results output silent :var rbld=rbi 
-dir.create("./seedProduction")
+dir.create("./seedProd")
 cat(rbld,'\n', file="./.Rbuildignore")
 dir.create("./man")
 dir.create("./R")

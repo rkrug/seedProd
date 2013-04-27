@@ -1,2 +1,2 @@
-# useDynLib(seedProduction)
+# useDynLib(seedProd)
 exportPattern("^[[:alpha:]]+")

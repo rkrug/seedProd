@@ -1,6 +1,6 @@
 .git
 ^.*\\.org$
-^seedProduction.
+^seedProd.
 .gitignore
 library
 version

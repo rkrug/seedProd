@@ -1,6 +1,6 @@
-*#seedProduction.*
-seedProduction.*
-!seedProduction.org*
+*#seedProd.*
+seedProd.*
+!seedProd.org*
 *.o
 *.so
 *.rds
