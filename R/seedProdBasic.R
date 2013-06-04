@@ -9,12 +9,13 @@
 ##' @param seedsProducedOutputLayer name of the raster layer containing the number of newly produced seeds (will be created!)
 ##' @return 
 ##' @author Rainer M Krug
-seedProdBasic <- function(ageLayer,
-                                individualsLayer,
-                                seedProdPerIndFunction,
-                                seedsProducedOutputLayer,
-                                initial = FALSE
-                                ) {
+seedProdBasic <- function(
+    ageLayer,
+    individualsLayer,
+    seedProdPerIndFunction,
+    seedsProducedOutputLayer,
+    initial = FALSE
+    ) {
   ## calculating seedsProduced layer
   seeds <- readRAST6(
     c(
