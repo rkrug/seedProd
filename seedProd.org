@@ -1,3 +1,5 @@
+# -*- org-babel-tangled-file: t; org-babel-tangle-run-postTangleScript: t; -*-
+
 #+TITLE:     seedProd.org
 #+AUTHOR:    Charles C. Berry    
 #+EMAIL:     cberry@tajo.ucsd.edu
@@ -88,15 +90,15 @@ Org-babel support for building
 
 ** Post tangle script
 #+begin_src sh :results output :tangle ./postTangleScript.sh :var VER=(vc-working-revision (buffer-file-name)) :var STATE=(vc-state (or (buffer-file-name) org-current-export-file))
-  sed -i s/MAJORVERSION/$MAJORVERSION/ ./DESCRIPTION
-  sed -i s/MINORVERSION/$MINORVERSION/ ./DESCRIPTION
-  sed -i s/PATCHVERSION/$PATCHVERSION/ ./DESCRIPTION
-  sed -i s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./DESCRIPTION
+  sed -i '' s/MAJORVERSION/$MAJORVERSION/ ./DESCRIPTION
+  sed -i '' s/MINORVERSION/$MINORVERSION/ ./DESCRIPTION
+  sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./DESCRIPTION
+  sed -i '' s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./DESCRIPTION
 
-  sed -i s/MAJORVERSION/$MAJORVERSION/ ./seedProd-package.R
-  sed -i s/MINORVERSION/$MINORVERSION/ ./seedProd-package.R
-  sed -i s/PATCHVERSION/$PATCHVERSION/ ./seedProd-package.R
-  sed -i s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProd-package.R
+  sed -i '' s/MAJORVERSION/$MAJORVERSION/ ./seedProd-package.R
+  sed -i '' s/MINORVERSION/$MINORVERSION/ ./seedProd-package.R
+  sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./seedProd-package.R
+  sed -i '' S/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProd-package.R
 
   Rscript -e "library(roxygen2);roxygenize('pkg', roxygen.dir='pkg', copy.package=FALSE, unlink.target=FALSE)"
   rm -f ./postTangleScript.sh
