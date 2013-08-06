@@ -1,9 +1,8 @@
 # -*- org-babel-tangled-file: t; org-babel-tangle-run-postTangleScript: t; -*-
 
 #+TITLE:     seedProd.org
-#+AUTHOR:    Charles C. Berry    
-#+EMAIL:     cberry@tajo.ucsd.edu
-#+DATE:      2010-12-08 Thur
+#+AUTHOR:    Rainer M Krug    
+#+EMAIL:     Rainer@krugs.de
 #+DESCRIPTION: R Package Development Helpers
 #+KEYWORDS: 
 
