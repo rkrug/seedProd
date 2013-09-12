@@ -99,9 +99,14 @@ Org-babel support for building
   sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./seedProd-package.R
   sed -i '' S/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProd-package.R
 
-  Rscript -e "library(roxygen2);roxygenize('pkg', roxygen.dir='pkg', copy.package=FALSE, unlink.target=FALSE)"
+  Rscript -e "library(roxygen2);roxygenize('.', copy.package=FALSE, unlink.target=FALSE)"
   rm -f ./postTangleScript.sh
 #+end_src
+
+#+RESULTS:
+: Updating collate directive in  /Users/rainerkrug/Documents/Projects/R-Packages/seedProd/DESCRIPTION 
+: Updating namespace directives
+: Writing seedProdBasicGRASS.Rd
 
 
 * gitignore file (./.gitignore)
@@ -113,16 +118,17 @@ Org-babel support for building
 :padline: no
 :END: 
 #+begin_src gitignore
-  *#seedProd.*
-  seedProd.*
-  !seedProd.org*
-  *.o
-  *.so
-  *.rds
-  .#*
-  #*
-  *#
-  *~
+,*#seedProd.*
+seedProd.*
+!seedProd.org*
+,*.o
+,*.so
+,*.rds
+.#*
+#*
+,*#
+,*~
+/..Rcheck/
 #+end_src
 
 * Git Revision info
@@ -154,34 +160,16 @@ Complete version info
 :padline: no
 :END: 
 #+begin_src fundamental
-  .git
-  ^.*\\.org$
-  ^seedProd.
-  .gitignore
-  library
-  version
-  postTangleScript.sh
+.git
+^.*\\.org$
+^seedProd.
+.gitignore
+library
+version
+postTangleScript.sh
 #+end_src
 
 
-
-* Package description
-#+begin_src R :eval nil :tangle ./seedProd-package.R :shebang :padline no :no-expand :comments no
-  ##' Seed production routines
-  ##' 
-  ##' \tabular{ll}{
-  ##' Package: \tab seedProd\cr
-  ##' Type: \tab Package\cr
-  ##' Version: \tab MAJORVERSION.MINORVERSION.PATCHVERSION\cr
-  ##' Date: \tab TODAYSDATE\cr
-  ##' License: \tab GPL (>= 2)\cr
-  ##' LazyLoad: \tab yes\cr
-  ##' }
-  ##'
-  ##' @docType package
-  ##' @author Rainer M Krug \email{Rainer@@krugs.de}
-  NULL
-#+end_src
 
 * Package Files
 ** DESCRIPTION
@@ -192,16 +180,17 @@ Complete version info
 :comments: no
 :END:
 #+begin_src fundamental
-  Package: seedProd
-  Type: Package
-  Title: Seep Production Routines
-  Version: MAJORVERSION.MINORVERSION-PATCHVERSION
-  Date: TODAYSDATE
-  Author: Rainer M. Krug
-  Maintainer: Rainer M Krug <Rainer@krugs.de>
-  Description: Different routines for simulating seed production
-  License: GPL-3
-  LazyLoad: yes
+Package: seedProd
+Type: Package
+Title: Seep Production Routines
+Version: MAJORVERSION.MINORVERSION-PATCHVERSION
+Date: TODAYSDATE
+Author: Rainer M. Krug
+Maintainer: Rainer M Krug <Rainer@krugs.de>
+Description: Different routines for simulating seed production
+Depends: spgrass6
+License: GPL-3
+LazyLoad: yes
 #+end_src
 
 ** NAMESPACE
@@ -218,64 +207,122 @@ Complete version info
 
 #+results:
 
+** Package description
+:PROPERTIES:
+:tangle:   ./R/seedProd-package.R
+:eval: nil
+:no-expand: TRUE
+:comments: no
+:END:
+#+begin_src R
+##' Seed production routines
+##'
+##' This package is a collection of different seed production routines.
+##' 
+##' \tabular{ll}{
+##' Package: \tab seedProd\cr
+##' Type: \tab Package\cr
+##' Version: \tab MAJORVERSION.MINORVERSION.PATCHVERSION\cr
+##' Date: \tab TODAYSDATE\cr
+##' License: \tab GPL (>= 2)\cr
+##' LazyLoad: \tab yes\cr
+##' }
+##'
+##' @name seedProd-package
+##' @docType package
+##' @author Rainer M Krug \email{Rainer@@krugs.de}
+NULL
+#+end_src
+
 
 * R directory (./R)
 
-** TODO seedProdBasic
+** TODO seedProdBasicGRASS
 Needs to be tested!!!
 :PROPERTIES:
-:tangle:   ./R/seedProdBasic.R
+:tangle:   ./R/seedProdBasicGRASS.R
 :comments: yes
 :no-expand: TRUE
 :END:
 #+begin_src R
-  ##' Calculating seed production based on provided function
-  ##'
-  ##' Calculate seed production per cell based on the age and numebr of individuals per cell and using auser specified function. 
-  ##' @title 
-  ##' @param ageLayer raster layer containing the age of the species in each cell
-  ##' @param individualsLayer raster layer containing the number of individuals per cell
-  ##' @param seedProdPerIndFunction function used to calculate the number of seeds based on the age in each cell
-  ##' @param seedsProducedOutputLayer name of the raster layer containing the number of newly produced seeds (will be created!)
-  ##' @return 
-  ##' @author Rainer M Krug
-  seedProdBasic <- function(
-      ageLayer,
-      individualsLayer,
-      seedProdPerIndFunction,
-      seedsProducedOutputLayer,
-      initial = FALSE
-      ) {
+##' Calculating seed production based on provided function
+##'
+##' Calculate seed production per cell based on the age and number of
+##' individuals per cell by using a user specified \R function. Input
+##' and output is from GRASS raster layers.
+##'
+##' If \code{initial == TRUE}, the seed production over the lifetime
+##' of the plant will be returned.
+##'
+##' The function \code{seedProdPerInd} has to have the following form:
+##'
+##' \code{seedProdPerInd <- function(age)\{...\}}
+##'
+##' where
+##'
+##' \code{age} is the age of the plant and the function returns the
+##' nomber of seeds produced.
+##' 
+##' The MASK in GRASS is \bold{not} respected.
+##' 
+##' @usage seedProdBasicGRASS(age, inds, output,
+##' seedProdPerIndFunction, initial=FALSE, overwrite=FALSE)
+##' @name seedProdBasicGRASS
+##' @title basic seed production based on age
+##' 
+##' @param age raster layer containing the age of the species in each cell
+##' @param inds raster layer containing the number of individuals per cell
+##' @param output name of the output raster layer which will
+##' containing the number of newly produced seeds
+##' @param seedProdPerIndFunction function used to calculate the
+##' number of seeds based on the age in each cell
+##' @param initial \code{logical} specifying if the seed production is
+##' initial, i.e. accumulative over their life time
+##' @param overwrite \code{logical} if TRUE, \code{output} will be overwritten if it exists
+##' 
+##' @return invisibly returns name of \code{output} layer
+##' @author Rainer M Krug <Rainer@@krugs.de>
+##' @export
+seedProdBasicGRASS <- function(
+    age,
+    inds,
+    output,
+    seedProdPerIndFunction,
+    initial = FALSE,
+    overwrite = FALSE
+    ) {
     ## calculating seedsProduced layer
     seeds <- readRAST6(
-      c(
-        ageLayer,
-        individualsLayer
-        ),
-      NODATA=-1
-      )
+        c(
+            age,
+            inds
+            ),
+        NODATA=-1
+        )
     if (initial) {
-      seeds[[3]] <- seeds[[1]]
-      seeds[[3]] <- 0
-      while (max(seeds[[1]], na.rm=TRUE) > 0)
-        {
-          seeds[[3]] <- seeds[[3]] + seedProdPerIndFunction(seeds[[1]]) * seeds[[2]]
-          seeds[[1]] <- seeds[[1]] - 1
-          seeds[[1]][seeds[[1]] < 0] <- 0
-        }
+        seeds[[3]] <- seeds[[1]]
+        seeds[[3]] <- 0
+        while (max(seeds[[1]], na.rm=TRUE) > 0)
+            {
+                seeds[[3]] <- seeds[[3]] +  seeds[[2]] * seedProdPerIndFunction( seeds[[1]] ) 
+                seeds[[1]] <- seeds[[1]] - 1
+                seeds[[1]][seeds[[1]] < 0] <- 0
+            }
     } else {
-      seeds[[3]] <- seedProdPerIndFunction(seeds[[1]]) * seeds[[2]]
+        seeds[[3]] <-  seeds[[2]] * seedProdPerIndFunction(seeds[[1]])
     }
     
     mode(seeds[[3]]) <- "double"
     ## seeds@proj4string <- parameter$proj4string
     writeRAST6(
-      seeds,
-      seedsProducedOutputLayer,
-      zcol=3,
-      NODATA=-1
-      )
-  }
+        seeds,
+        output,
+        zcol=3,
+        NODATA=-1,
+        overwrite = overwrite
+        )
+    invisible(output)
+}
 #+end_src
 
 
