@@ -45,6 +45,9 @@ seedProdBasicGRASS <- function(
     initial = FALSE,
     overwrite = FALSE
     ) {
+    if ( length( execGRASS("g.mlist", type="rast", pattern=output, intern=TRUE) ) & !overwrite ) {
+        stop(paste("Layer", output, "exists! Please specify 'overwrite=TRUE' or use different output name!"))
+    } 
     ## calculating seedsProduced layer
     seeds <- readRAST6(
         c(
@@ -73,7 +76,7 @@ seedProdBasicGRASS <- function(
         output,
         zcol=3,
         NODATA=-1,
-        overwrite = overwrite
+        overwrite = TRUE
         )
     invisible(output)
 }

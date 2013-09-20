@@ -2,7 +2,7 @@ Package: seedProd
 Type: Package
 Title: Seep Production Routines
 Version: 0.0-1
-Date: 2013-09-12_15-20
+Date: 2013-09-20_14-31
 Author: Rainer M. Krug
 Maintainer: Rainer M Krug <Rainer@krugs.de>
 Description: Different routines for simulating seed production
@@ -11,5 +11,5 @@ Depends:
 License: GPL-3
 LazyLoad: yes
 Collate:
-    'seedProd-package.R'
+    'package.R'
     'seedProdBasicGRASS.R'

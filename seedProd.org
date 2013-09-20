@@ -104,9 +104,6 @@ Org-babel support for building
 #+end_src
 
 #+RESULTS:
-: Updating collate directive in  /Users/rainerkrug/Documents/Projects/R-Packages/seedProd/DESCRIPTION 
-: Updating namespace directives
-: Writing seedProdBasicGRASS.Rd
 
 
 * gitignore file (./.gitignore)
@@ -209,7 +206,7 @@ LazyLoad: yes
 
 ** Package description
 :PROPERTIES:
-:tangle:   ./R/seedProd-package.R
+:tangle:   ./R/package.R
 :eval: nil
 :no-expand: TRUE
 :comments: no
@@ -291,6 +288,9 @@ seedProdBasicGRASS <- function(
     initial = FALSE,
     overwrite = FALSE
     ) {
+    if ( length( execGRASS("g.mlist", type="rast", pattern=output, intern=TRUE) ) & !overwrite ) {
+        stop(paste("Layer", output, "exists! Please specify 'overwrite=TRUE' or use different output name!"))
+    } 
     ## calculating seedsProduced layer
     seeds <- readRAST6(
         c(
@@ -319,7 +319,7 @@ seedProdBasicGRASS <- function(
         output,
         zcol=3,
         NODATA=-1,
-        overwrite = overwrite
+        overwrite = TRUE
         )
     invisible(output)
 }
@@ -336,139 +336,6 @@ Write vignette
   CWD=`pwd`
   R CMD check pkg | sed 's/^*/ */'
 #+end_src
-
-#+results:
-#+begin_example
- * using log directory ‘/home/rkrug/Documents/Projects/R-Packages/seeddisp/pkg.Rcheck’
- * using R version 2.13.2 (2011-09-30)
- * using platform: i686-pc-linux-gnu (32-bit)
- * using session charset: UTF-8
- * checking for file ‘DESCRIPTION’ ... OK
- * checking extension type ... Package
- * this is package ‘seedProd’ version ‘0.0-13’
- * checking package namespace information ... OK
- * checking package dependencies ... OK
- * checking if this is a source package ... WARNING
-Subdirectory ‘seedProd/src’ contains object files.
- * checking for executable files ... OK
- * checking whether package ‘seedProd’ can be installed ... OK
- * checking installed package size ... OK
- * checking package directory ... OK
- * checking for portable file names ... OK
- * checking for sufficient/correct file permissions ... OK
- * checking DESCRIPTION meta-information ... OK
- * checking top-level files ... OK
- * checking index information ... OK
- * checking package subdirectories ... WARNING
-Subdirectory 'inst' contains no files.
- * checking R files for non-ASCII characters ... OK
- * checking R files for syntax errors ... OK
- * checking whether the package can be loaded ... OK
- * checking whether the package can be loaded with stated dependencies ... OK
- * checking whether the package can be unloaded cleanly ... OK
- * checking whether the namespace can be loaded with stated dependencies ... OK
- * checking whether the namespace can be unloaded cleanly ... OK
- * checking for unstated dependencies in R code ... OK
- * checking S3 generic/method consistency ... OK
- * checking replacement functions ... OK
- * checking foreign function calls ... OK
- * checking R code for possible problems ... OK
- * checking Rd files ... OK
- * checking Rd metadata ... OK
- * checking Rd cross-references ... OK
- * checking for missing documentation entries ... WARNING
-Undocumented code objects:
-  waterDisp
-All user-level objects in a package should have documentation entries.
-See the chapter 'Writing R documentation files' in the 'Writing R
-Extensions' manual.
- * checking for code/documentation mismatches ... WARNING
-Codoc mismatches from documentation object 'birdDispGRASS':
-birdDispGRASS
-  Code: function(input, output = "birdDispSeeds", zeroToNULL = TRUE,
-                 overwrite = FALSE)
-  Docs: function(input, output, overwrite)
-  Argument names in code not in docs:
-    zeroToNULL
-  Mismatches in argument names:
-    Position: 3 Code: zeroToNULL Docs: overwrite
-  Mismatches in argument default values:
-    Name: 'output' Code: "birdDispSeeds" Docs: 
-    Name: 'overwrite' Code: FALSE Docs: 
-
-Codoc mismatches from documentation object 'localDispGRASS':
-localDispGRASS
-  Code: function(input, output = "localDispSeeds", zeroToNULL = TRUE,
-                 overwrite = FALSE)
-  Docs: function(input, output, overwrite)
-  Argument names in code not in docs:
-    zeroToNULL
-  Mismatches in argument names:
-    Position: 3 Code: zeroToNULL Docs: overwrite
-  Mismatches in argument default values:
-    Name: 'output' Code: "localDispSeeds" Docs: 
-    Name: 'overwrite' Code: FALSE Docs: 
-
-Codoc mismatches from documentation object 'waterDispGRASS':
-waterDispGRASS
-  Code: function(input, output = "waterDispSeeds", slope = "slope",
-                 flowdir = "flowdir", depRates, overwrite = FALSE,
-                 zeroToNULL = TRUE, progress = TRUE)
-  Docs: function(input, output = "waterDispSeeds", slope = "SLOPE",
-                 flowdir = "FLOWDIR", overwrite = FALSE)
-  Argument names in code not in docs:
-    depRates zeroToNULL progress
-  Mismatches in argument names:
-    Position: 5 Code: depRates Docs: overwrite
-  Mismatches in argument default values:
-    Name: 'slope' Code: "slope" Docs: "SLOPE"
-    Name: 'flowdir' Code: "flowdir" Docs: "FLOWDIR"
-
-Codoc mismatches from documentation object 'windDisp':
-windDisp
-  Code: function(SD2D, SEEDS, MASK, zeroToNULL)
-  Docs: function(SD2D, SEEDS, MASK)
-  Argument names in code not in docs:
-    zeroToNULL
-
-Codoc mismatches from documentation object 'windDispGRASS':
-windDisp
-  Code: function(SD2D, SEEDS, MASK, zeroToNULL)
-  Docs: function(SD2D, input, output = "windDispSeeds", overwrite =
-                 FALSE)
-  Argument names in code not in docs:
-    SEEDS MASK zeroToNULL
-  Argument names in docs not in code:
-    input output overwrite
-  Mismatches in argument names:
-    Position: 2 Code: SEEDS Docs: input
-    Position: 3 Code: MASK Docs: output
-    Position: 4 Code: zeroToNULL Docs: overwrite
-
- * checking Rd \usage sections ... WARNING
-Documented arguments not in \usage in documentation object 'waterDispGRASS':
-  depRates
-
-Objects in \usage without \alias in documentation object 'windDispGRASS':
-  windDisp
-
-Functions with \usage entries need to have the appropriate \alias
-entries, and all their arguments documented.
-The \usage entries must correspond to syntactically valid R code.
-See the chapter 'Writing R documentation files' in the 'Writing R
-Extensions' manual.
- * checking Rd contents ... OK
- * checking for unstated dependencies in examples ... OK
- * checking line endings in C/C++/Fortran sources/headers ... OK
- * checking line endings in Makefiles ... OK
- * checking for portable compilation flags in Makevars ... OK
- * checking for portable use of $(BLAS_LIBS) and $(LAPACK_LIBS) ... OK
- * checking examples ... NONE
- * checking PDF version of manual ... OK
-WARNING: There were 5 warnings, see
-  ‘/home/rkrug/Documents/Projects/R-Packages/seeddisp/pkg.Rcheck/00check.log’
-for details
-#+end_example
 
 
 
@@ -596,3 +463,15 @@ dir.create("./Rlib")
    
  [[info:emacs#Specifying%20File%20Variables][info:emacs#Specifying File Variables]]
  
+
+* CHANGES
+** <2013-09-20 Fri 14:35> Fixed documentation for roxygen 
+  - revision :: %![Error: (wrong-type-argument symbolp master)]
+  - state    :: edited
+  - link     :: [[file:~/Documents/Projects/AlienManagementDrakensberg/sim/packages/seedProd/seedProd.org::*seedProdBasicGRASS][seedProdBasicGRASS]] 
+  - author   :: Rainer M Krug, email: Rainer@krugs.de Rainer M. Krug
+** <2013-09-20 Fri 14:36> Fixed error in the use of the overwrite argument 
+  - revision :: %![Error: (wrong-type-argument symbolp master)]
+  - state    :: edited
+  - link     :: [[file:~/Documents/Projects/AlienManagementDrakensberg/sim/packages/seedProd/seedProd.org::*CHANGES][CHANGES]] 
+  - author   :: Rainer M Krug, email: Rainer@krugs.de Rainer M. Krug
