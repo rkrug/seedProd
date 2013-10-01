@@ -66,8 +66,8 @@ Org-babel support for building
 #+PROPERTY: comments yes
 #+PROPERTY: padline no
 #+PROPERTY: var MAJORVERSION=0
-#+PROPERTY: var+ MINORVERSION=0
-#+PROPERTY: var+ PATCHVERSION=1
+#+PROPERTY: var+ MINORVERSION=1
+#+PROPERTY: var+ PATCHVERSION=0
 #+PROPERTY: var+ GITHASH="testhash" 
 #+PROPERTY: var+ GITCOMMITDATE="testdate"
 :END:
@@ -94,16 +94,18 @@ Org-babel support for building
   sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./DESCRIPTION
   sed -i '' s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./DESCRIPTION
 
-  sed -i '' s/MAJORVERSION/$MAJORVERSION/ ./seedProd-package.R
-  sed -i '' s/MINORVERSION/$MINORVERSION/ ./seedProd-package.R
-  sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./seedProd-package.R
-  sed -i '' S/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./seedProd-package.R
+  sed -i '' s/MAJORVERSION/$MAJORVERSION/ ./R/package.R
+  sed -i '' s/MINORVERSION/$MINORVERSION/ ./R/package.R
+  sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./R/package.R
+  sed -i '' S/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./R/package.R
 
   Rscript -e "library(roxygen2);roxygenize('.', copy.package=FALSE, unlink.target=FALSE)"
   rm -f ./postTangleScript.sh
 #+end_src
 
 #+RESULTS:
+: Updating collate directive in  /Users/rainerkrug/Documents/Projects/R-Packages/seedProd/DESCRIPTION 
+: Updating namespace directives
 
 
 * gitignore file (./.gitignore)
@@ -185,7 +187,7 @@ Date: TODAYSDATE
 Author: Rainer M. Krug
 Maintainer: Rainer M Krug <Rainer@krugs.de>
 Description: Different routines for simulating seed production
-Depends: spgrass6
+Imports: spgrass6
 License: GPL-3
 LazyLoad: yes
 #+end_src
@@ -228,6 +230,7 @@ LazyLoad: yes
 ##' @name seedProd-package
 ##' @docType package
 ##' @author Rainer M Krug \email{Rainer@@krugs.de}
+##' @import spgrass6
 NULL
 #+end_src
 
