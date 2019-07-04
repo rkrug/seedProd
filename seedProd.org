@@ -97,15 +97,14 @@ Org-babel support for building
   sed -i '' s/MAJORVERSION/$MAJORVERSION/ ./R/package.R
   sed -i '' s/MINORVERSION/$MINORVERSION/ ./R/package.R
   sed -i '' s/PATCHVERSION/$PATCHVERSION/ ./R/package.R
-  sed -i '' S/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./R/package.R
+  sed -i '' s/TODAYSDATE/`date +%Y-%m-%d_%H-%M`/ ./R/package.R
 
   Rscript -e "library(roxygen2);roxygenize('.', copy.package=FALSE, unlink.target=FALSE)"
   rm -f ./postTangleScript.sh
 #+end_src
 
 #+RESULTS:
-: Updating collate directive in  /Users/rainerkrug/Documents/Projects/R-Packages/seedProd/DESCRIPTION 
-: Updating namespace directives
+: Writing seedProd-package.Rd
 
 
 * gitignore file (./.gitignore)
